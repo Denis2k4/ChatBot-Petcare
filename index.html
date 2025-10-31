@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chatbot | Minus</title>
+  <link rel="icon" href="anh/ngunhubo.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Material Icons -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"
+  />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Chatbot Toggler -->
+  <button id="chatbot-toggler">
+    <span class="material-symbols-rounded">mode_comment</span>
+    <span class="material-symbols-rounded">close</span>
+  </button>
+
+  <!-- Chatbot Popup -->
+  <div class="chatbot-popup">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-info">
+        <img
+          src="anh/ngunhubo.png"
+          alt="Chatbot Logo"
+          class="chatbot-logo"
+          width="50"
+          height="50"
+        />
+        <h2 class="logo-text">Chatbot</h2>
+      </div>
+      <button id="close-chatbot" class="material-symbols-rounded">
+        keyboard_arrow_down
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="chat-body">
+      <div class="message bot-message">
+        <img
+          src="anh/ngunhubo.png"
+          alt="Bot Avatar"
+          class="bot-avatar"
+          width="50"
+          height="50"
+        />
+        <div class="message-text">
+          Xin chào 👋<br/>Tôi là một trợ lý ảo trả lời các câu hỏi liên quan đến lĩnh vực thú y. Tôi có thể giúp gì cho bạn hôm nay?
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="chat-footer">
+      <form action="#" class="chat-form">
+        <textarea
+          placeholder="Message..."
+          class="message-input"
+          required
+        ></textarea>
+
+        <div class="chat-controls">
+          <button
+            type="button"
+            id="emoji-picker"
+            class="material-symbols-outlined"
+          >
+            sentiment_satisfied
+          </button>
+
+          <div class="file-upload-wrapper">
+            <input type="file" id="file-input" hidden />
+            <img src="#" alt="" />
+            <button
+              type="button"
+              id="file-upload"
+              class="material-symbols-rounded"
+            >
+              attach_file
+            </button>
+            <button
+              type="button"
+              id="file-cancel"
+              class="material-symbols-rounded"
+            >
+              close
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            id="send-message"
+            class="material-symbols-rounded"
+          >
+            arrow_upward
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.17.2/dist/sweetalert2.all.min.js"></script>
+
+  <!-- Custom Script -->
+  <script src="script.js" defer></script>
+</body>
+</html>
