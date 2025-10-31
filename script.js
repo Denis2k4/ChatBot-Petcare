@@ -9,8 +9,90 @@ const chatbotToggler = document.querySelector("#chatbot-toggler");
 const closeChatbot = document.querySelector("#close-chatbot");
 
 // === API CONFIG ===
-const API_KEY = "AIzaSyA9EwDo5ErtNWImcDv6Tc8zz9OZmBjPFSA";
+const API_KEY = "AIzaSyBNZcp3FhaYv4OOEOGGAdYXg95xxlm6fgc"; // ⚠️ Nên ẩn key sau
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+// === MODEL SẢN PHẨM ===
+const vetProducts = [
+  {
+    id: 1,
+    name: "Bòng thái bình",
+    category: "bưởi da xanh, ngon, không hạt",
+    animalType: "Hoa quả",
+    description: "thực phẩm bổ sung vitamin C, tăng sức đề kháng.",
+    price: 250000,
+    image: "anh/ngunhubo.png",
+  },
+  {
+    id: 2,
+    name: "Whiskas Adult Tuna",
+    category: "Thức ăn hạt",
+    animalType: "Mèo",
+    description: "Thức ăn khô cho mèo trưởng thành vị cá ngừ, giàu dinh dưỡng.",
+    price: 180000,
+    image: "sanpham/whiskas-tuna.png",
+  },
+  {
+    id: 3,
+    name: "Bios Life Pet Vitamin",
+    category: "Vitamin & Khoáng chất",
+    animalType: "Chó",
+    description: "Bổ sung vitamin A, D3, E giúp tăng sức đề kháng và lông mượt hơn.",
+    price: 120000,
+    image: "sanpham/bioslife.png",
+  },
+  {
+    id: 4,
+    name: "Cát vệ sinh Me-O",
+    category: "Vệ sinh thú cưng",
+    animalType: "Mèo",
+    description: "Cát vệ sinh khử mùi, vón cục tốt, dễ dọn.",
+    price: 95000,
+    image: "sanpham/catmeo.png",
+  },
+  {
+    id: 5,
+    name: "Thuốc nhỏ mắt Veyes",
+    category: "Thuốc chăm sóc mắt",
+    animalType: "Chó, Mèo",
+    description: "Giúp giảm viêm, làm sạch và bảo vệ mắt cho chó mèo.",
+    price: 85000,
+    image: "sanpham/veyes.png",
+  },
+];
+
+// === HÀM TRA CỨU SẢN PHẨM ===
+function findProductByKeyword(keyword) {
+  keyword = keyword.toLowerCase();
+  return vetProducts.filter(
+    (p) =>
+      p.name.toLowerCase().includes(keyword) ||
+      p.category.toLowerCase().includes(keyword) ||
+      p.description.toLowerCase().includes(keyword) ||
+      p.animalType.toLowerCase().includes(keyword)
+  );
+}
+
+function getProductSuggestions(message) {
+  const results = findProductByKeyword(message);
+  if (results.length === 0) return null;
+
+  return results
+    .map(
+      (p) => `
+      <div class="product-suggestion">
+        <img src="${p.image}" alt="${p.name}" width="80" height="80" />
+        <div>
+          <strong>${p.name}</strong> (${p.animalType})<br>
+          💰 ${p.price.toLocaleString()} VNĐ<br>
+          📦 ${p.category}<br>
+          📝 ${p.description}
+        </div>
+      </div>
+    `
+    )
+    .join("<hr>");
+}
 
 // === USER & CHAT STATE ===
 const userData = {
@@ -24,41 +106,7 @@ const chatHistory = [
     parts: [
       {
         text: `Bạn là một trợ lý ảo chuyên về thú y và chăm sóc vật nuôi toàn diện.
-
-        **CHỨC NĂNG CHÍNH:**
-        1. Tư vấn sức khỏe:
-          - Giải thích triệu chứng bệnh thường gặp
-          - Hướng dẫn sơ cứu khẩn cấp
-          - Tư vấn dinh dưỡng và chế độ ăn
-          - Phân tích hành vi vật nuôi
-
-        2. Gợi ý sản phẩm:
-          - Thức ăn và supplement dinh dưỡng
-          - Sản phẩm vệ sinh, chăm sóc
-          - Phụ kiện và đồ chơi
-          - Thuốc thú y thông thường
-
-        3. Chăm sóc khách hàng:
-          - Hỗ trợ đặt lịch khám
-          - Tư vấn dịch vụ spa, grooming
-          - Giải đáp chính sách bảo hành
-          - Hướng dẫn sử dụng sản phẩm
-
-        **NGUYÊN TẮC HOẠT ĐỘNG:**
-        - KHÔNG chẩn đoán thay thế bác sĩ thú y
-        - KHÔNG kê đơn thuốc điều trị
-        - Luôn đề xuất đến phòng khám thú y trong trường hợp khẩn cấp
-        - Gợi ý sản phẩm phù hợp với nhu cầu cụ thể
-
-        **PHẠM VI KIẾN THỨC:**
-        - Chó, mèo, thú cưng nhỏ
-        - Cá cảnh và thủy sinh
-        - Chim và bò sát cảnh
-        - Các giống vật nuôi phổ biến
-
-        Đối với câu hỏi ngoài phạm vi, vui lòng trả lời: "Xin lỗi, tôi chỉ có thể hỗ trợ các vấn đề về thú cưng và chăm sóc vật nuôi."
-
-        Hãy tiếp cận thân thiện, chuyên nghiệp và luôn đặt sức khỏe vật nuôi lên hàng đầu.`
+        Luôn thân thiện, ưu tiên sức khỏe vật nuôi và gợi ý sản phẩm phù hợp khi cần.`,
       },
     ],
   },
@@ -91,6 +139,16 @@ const resetFileInput = () => {
 const generateBotResponse = async (incomingDiv) => {
   const messageElement = incomingDiv.querySelector(".message-text");
 
+  // Gợi ý sản phẩm trước khi gọi API
+  const suggestion = getProductSuggestions(userData.message);
+  if (suggestion) {
+    messageElement.innerHTML = suggestion;
+    incomingDiv.classList.remove("thinking");
+    chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+    return;
+  }
+
+  // Nếu không có sản phẩm thì gọi API Gemini
   chatHistory.push({
     role: "user",
     parts: [
@@ -99,7 +157,6 @@ const generateBotResponse = async (incomingDiv) => {
     ],
   });
 
-  // Giới hạn độ dài lịch sử
   if (chatHistory.length > 40) chatHistory.splice(0, chatHistory.length - 40);
 
   try {
@@ -112,12 +169,12 @@ const generateBotResponse = async (incomingDiv) => {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error.message);
 
-    const apiText = (data?.candidates?.[0]?.content?.parts?.[0]?.text || "")
-      .replace(/\*\*(.*?)\*\*/g, "$1")
-      .trim();
+    const apiText =
+      (data?.candidates?.[0]?.content?.parts?.[0]?.text || "")
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .trim();
 
     messageElement.innerText = apiText;
-
     chatHistory.push({ role: "model", parts: [{ text: apiText }] });
   } catch (err) {
     messageElement.textContent = err?.message || String(err);
@@ -137,12 +194,10 @@ const handleOutgoingMessage = (e) => {
   userData.message = messageInput.value.trim();
   if (!userData.message && !userData.file?.data) return;
 
-  // Clear input
   messageInput.value = "";
   messageInput.dispatchEvent(new Event("input"));
   fileUploadWrapper.classList.remove("file-uploaded");
 
-  // Hiển thị tin nhắn người dùng
   const userDiv = document.createElement("div");
   userDiv.classList.add("message", "user-message");
 
@@ -161,7 +216,6 @@ const handleOutgoingMessage = (e) => {
   chatBody.appendChild(userDiv);
   chatBody.scrollTop = chatBody.scrollHeight;
 
-  // Tạo phản hồi bot
   setTimeout(() => {
     const botThinkingHTML = `
       <img src="anh/ngunhubo.png" class="bot-avatar" width="50" height="50" />
@@ -206,15 +260,25 @@ fileInput.addEventListener("change", async (e) => {
   if (!file) return;
 
   const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-  const MAX_SIZE = 2 * 1024 * 1024; // 2MB
+  const MAX_SIZE = 2 * 1024 * 1024;
 
   if (!validTypes.includes(file.type)) {
-    await Swal.fire({ icon: "error", title: "Lỗi", text: "Chỉ chấp nhận ảnh (JPEG, PNG, GIF, WEBP)", confirmButtonText: "OK" });
+    await Swal.fire({
+      icon: "error",
+      title: "Lỗi",
+      text: "Chỉ chấp nhận ảnh (JPEG, PNG, GIF, WEBP)",
+      confirmButtonText: "OK",
+    });
     return resetFileInput();
   }
 
   if (file.size > MAX_SIZE) {
-    await Swal.fire({ icon: "error", title: "Lỗi", text: "File quá lớn (tối đa 2MB)", confirmButtonText: "OK" });
+    await Swal.fire({
+      icon: "error",
+      title: "Lỗi",
+      text: "File quá lớn (tối đa 2MB)",
+      confirmButtonText: "OK",
+    });
     return resetFileInput();
   }
 
@@ -254,6 +318,12 @@ document.querySelector(".chat-form").appendChild(picker);
 
 // === BUTTON EVENTS ===
 sendMessageButton.addEventListener("click", handleOutgoingMessage);
-document.querySelector("#file-upload").addEventListener("click", () => fileInput.click());
-chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
-closeChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+document
+  .querySelector("#file-upload")
+  .addEventListener("click", () => fileInput.click());
+chatbotToggler.addEventListener("click", () =>
+  document.body.classList.toggle("show-chatbot")
+);
+closeChatbot.addEventListener("click", () =>
+  document.body.classList.remove("show-chatbot")
+);

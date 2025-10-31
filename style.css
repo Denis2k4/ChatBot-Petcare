@@ -3,6 +3,23 @@
 ------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap');
 
+
+/* test */
+.product-suggestion {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0;
+}
+.product-suggestion img {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.product-suggestion div {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
 /* -------------------------------------------
    RESET & BASE STYLES
 ------------------------------------------- */
