@@ -9,7 +9,7 @@ const chatbotToggler = document.querySelector("#chatbot-toggler");
 const closeChatbot = document.querySelector("#close-chatbot");
 
 // === API CONFIG ===
-const API_KEY = "AIzaSyBNZcp3FhaYv4OOEOGGAdYXg95xxlm6fgc"; // ⚠️ Nên ẩn key sau
+const API_KEY = "AIzaSyAP4jIh-OE5a38OZ0zG28_KACBfNOsyr6w"; // ⚠️ Nên ẩn key sau
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 // === MODEL SẢN PHẨM ===
